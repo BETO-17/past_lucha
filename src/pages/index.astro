@@ -1,11 +1,71 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Welcome from '../components/Welcome.astro';
+import ProductCard from '../components/ProductCard.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Appointment from '../components/Appointment.astro';
+import InstagramFeed from '../components/InstagramFeed.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const productos = [
+  {
+    name: 'Torta Selva Negra',
+    image: '/images/selva-negra.jpg',
+    description: 'Bizcocho de chocolate, cerezas y crema chantilly.',
+    price: 65.00,
+  },
+  {
+    name: 'Cheesecake de Maracuyá',
+    image: '/images/cheesecake.jpg',
+    description: 'Suave cheesecake con cobertura de maracuyá.',
+    price: 45.00,
+  },
+  {
+    name: 'Macarons (caja x12)',
+    image: '/images/macarons.jpg',
+    description: 'Surtido de sabores: frambuesa, pistacho y chocolate.',
+    price: 35.00,
+  },
+  {
+    name: 'Tarta de Frutas',
+    image: '/images/tarta-frutas.jpg',
+    description: 'Base de masa quebrada, crema pastelera y frutas frescas.',
+    price: 50.00,
+  },
+];
 ---
-
 <Layout>
-	<Welcome />
+  <Welcome />
+  <section id="productos" class="productos">
+    <h2>Nuestros productos estrella</h2>
+    <div class="grid">
+      {productos.map((prod) => (
+        <ProductCard {...prod} />
+      ))}
+    </div>
+  </section>
+
+   <Testimonials />
+  
+  <Appointment />
+  
+  <InstagramFeed />
+
 </Layout>
+
+<style>
+  .productos {
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .productos h2 {
+    margin-bottom: 2rem;
+    color: #d63384;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+</style>

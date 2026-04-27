@@ -1,0 +1,56 @@
+---
+export interface Props {
+  name: string;
+  image: string;
+  description: string;
+  price: number;
+}
+const { name, image, description, price } = Astro.props;
+---
+<div class="card">
+  <img src={image} alt={name} />
+  <div class="card-body">
+    <h3>{name}</h3>
+    <p>{description}</p>
+    <span class="price">S/ {price.toFixed(2)}</span>
+    <button class="add-to-cart">Añadir al pedido</button>
+  </div>
+</div>
+
+<style>
+  .card {
+    border: 1px solid #eee;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  .card-body {
+    padding: 1rem;
+  }
+  .price {
+    font-weight: bold;
+    color: #d63384;
+    font-size: 1.2rem;
+    display: block;
+    margin: 0.5rem 0;
+  }
+  .add-to-cart {
+    width: 100%;
+    padding: 0.5rem;
+    background: #d63384;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+  }
+</style>
