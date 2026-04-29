@@ -1,17 +1,17 @@
 ---
 // InstagramFeed.astro
 const posts = [
-  "/images/post-1.jpg",
-  "/images/post-2.jpg",
-  "/images/post-3.jpg",
-  "/images/post-4.jpg",
+  "/src/assets/Cheesecake-de-Maracuyá.png",
+  "/src/assets/Macarons.png",
+  "/src/assets/Tarta-de-Frutas.png",
+  "/src/assets/Torta-Selva-Negra.png",
 ];
 ---
 <section class="instagram">
   <h2>Síguenos en @dulcearte</h2>
   <div class="insta-grid">
     {posts.map((img) => (
-      <a href="https://instagram.com/dulcearte" target="_blank">
+      <a href="https://instagram.com/postreslucha?igsh=c283emJuNmFoZmw0" target="_blank">
         <img src={img} alt="Publicación Instagram" />
       </a>
     ))}

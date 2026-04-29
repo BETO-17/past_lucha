@@ -6,6 +6,30 @@ import Testimonials from '../components/Testimonials.astro';
 import Appointment from '../components/Appointment.astro';
 import InstagramFeed from '../components/InstagramFeed.astro';
 
+// 1. IMPORTAR EL CLIENTE
+import { supabaseServer } from '../lib/supabase';
+
+let connectionStatus = "Verificando...";
+let dataError = null;
+
+try {
+  // Intentamos la consulta
+  const { data, error } = await supabaseServer
+    .from('productos') 
+    .select('*')
+    .limit(1);
+
+  if (error) {
+    dataError = error.message;
+    connectionStatus = "Error de conexión ❌";
+  } else {
+    connectionStatus = "Conexión exitosa ✅";
+  }
+} catch (e) {
+  dataError = e instanceof Error ? e.message : "Error desconocido";
+  connectionStatus = "Error crítico ❌";
+}
+
 const productos = [
   {
     name: 'Torta Selva Negra',
@@ -33,8 +57,16 @@ const productos = [
   },
 ];
 ---
-<Layout>
+
+<Layout title="Pastelería - Test Conexión">
+  
+  <div class="debug-status">
+    <p>Estado DB: <strong>{connectionStatus}</strong></p>
+    {dataError && <p class="error-msg">Detalle: {dataError}</p>}
+  </div>
+
   <Welcome />
+
   <section id="productos" class="productos">
     <h2>Nuestros productos estrella</h2>
     <div class="grid">
@@ -44,15 +76,23 @@ const productos = [
     </div>
   </section>
 
-   <Testimonials />
-  
+  <Testimonials />
   <Appointment />
-  
   <InstagramFeed />
 
 </Layout>
 
 <style>
+  .debug-status {
+    background: #f0f0f0;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #ccc;
+  }
+  .error-msg {
+    color: red;
+  }
   .productos {
     padding: 3rem 2rem;
     text-align: center;

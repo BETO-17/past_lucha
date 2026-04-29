@@ -21,6 +21,14 @@ const { title = "Pastelería Doña Lucha" } = Astro.props;
       <a href="#appointment">Reserva cita</a>
       <a href="#testimonios">Testimonios</a>
       <a href="#contacto">Contacto</a>
+    
+      <a href="/login" class="session-icon" aria-label="Iniciar sesión">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+    
     </nav>
   </header>
 
@@ -29,16 +37,16 @@ const { title = "Pastelería Doña Lucha" } = Astro.props;
   </main>
 
   <div class="social-float">
-    <a href="https://facebook.com/" target="_blank" class="social-icon facebook" aria-label="Facebook">
+    <a href="https://facebook.com/share/1CVHt6DCRj/" target="_blank" class="social-icon facebook" aria-label="Facebook">
       <img src="/public/facebook.png" alt="Facebook" />
     </a>
-    <a href="https://tiktok.com/" target="_blank" class="social-icon tiktok" aria-label="TikTok">
+    <a href="https://tiktok.com/@postreslucha" target="_blank" class="social-icon tiktok" aria-label="TikTok">
       <img src="/public/tik-tok.png" alt="TikTok" />
     </a>
-    <a href="https://instagram.com/" target="_blank" class="social-icon instagram" aria-label="Instagram">
+    <a href="https://instagram.com/postreslucha?igsh=c283emJuNmFoZmw0" target="_blank" class="social-icon instagram" aria-label="Instagram">
       <img src="/public/instagram.png" alt="Instagram" />
     </a>
-    <a href="https://wa.me/51928382166" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp">
+    <a href="https://wa.me/51983091360" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp">
       <img src="/public/whatsapp.png" alt="WhatsApp" />
     </a>
   </div>
@@ -102,4 +110,52 @@ const { title = "Pastelería Doña Lucha" } = Astro.props;
   }
   .social-icon:hover { transform: scale(1.15); }
   .social-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Estilos del Icono de Sesión */
+.session-icon {
+  position: fixed; 
+  top: 90px;      
+  right: 20px;    
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Mantenemos el color rosado de fondo desde el inicio */
+  background: #ff00ff; 
+  /* El color del icono (stroke) será blanco */
+  color: white; 
+  z-index: 1001;
+  box-shadow: 0 4px 10px rgba(255, 171, 251, 0.2);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.session-icon svg {
+  width: 30px;
+  height: 30px;
+  /* Usamos currentColor para que herede el 'white' del padre */
+  stroke: currentColor; 
+}
+
+/* Al pasar el cursor, solo aplicamos un efecto de escala o brillo, 
+   sin cambiar los colores de fondo ni del icono */
+.session-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1); /* Esto le da un toque de luz sin ponerlo blanco */
+  background: #ff4081;    /* Forzamos que se mantenga el rosa */
+  color: white;           /* Forzamos que el icono siga blanco */
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  .session-icon {
+    top: 80px; 
+    right: 15px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
 </style>
