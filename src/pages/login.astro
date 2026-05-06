@@ -38,14 +38,6 @@ import Layout from '../layouts/Layout.astro';
   let toastContainer;
 
   let isLogin = true;
-  let toggleLink = null;
-
-  function attachToggleLink() {
-    toggleLink = document.getElementById('toggle-link');
-    if (toggleLink) {
-      toggleLink.addEventListener('click', toggleMode);
-    }
-  }
 
   // Función para mostrar toasts
   function showToast(message, type = 'info', duration = 4000) {
@@ -68,8 +60,6 @@ import Layout from '../layouts/Layout.astro';
     toggleText.innerHTML = isLogin
       ? '¿No tienes cuenta? <a href="#" id="toggle-link">Regístrate</a>'
       : '¿Ya tienes cuenta? <a href="#" id="toggle-link">Inicia sesión</a>';
-
-    attachToggleLink();
   }
 
   function toggleMode(e) {
@@ -146,14 +136,17 @@ import Layout from '../layouts/Layout.astro';
       form.addEventListener('submit', handleSubmit);
     }
 
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target && target.id === 'toggle-link') {
+        toggleMode(e);
+      }
+    });
+
     updateUI();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  init();
 
   // Redirigir si ya hay sesión activa
   (async () => {
