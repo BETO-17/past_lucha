@@ -1,0 +1,119 @@
+---
+---
+
+<div id="userMenuContainer" style="display: none; align-items: center; gap: 10px;">
+  <div style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px 12px; border-radius: 20px; transition: background 0.3s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+    <div id="userAvatar" style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.9rem;">
+      U
+    </div>
+    <span id="userName" style="font-size: 0.85rem; font-weight: 500; color: var(--text);">Usuario</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </div>
+  
+  <!-- Dropdown -->
+  <div id="userDropdown" style="
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    min-width: 180px;
+    display: none;
+    z-index: 1000;
+  ">
+    <a href="/perfil" style="display: block; padding: 10px 20px; font-size: 0.9rem; color: var(--text); transition: background 0.2s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+      👤 Mi Perfil
+    </a>
+    <a href="/pedidos" style="display: block; padding: 10px 20px; font-size: 0.9rem; color: var(--text); transition: background 0.2s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+      📦 Mis Pedidos
+    </a>
+    <a href="/reservas" style="display: block; padding: 10px 20px; font-size: 0.9rem; color: var(--text); transition: background 0.2s;" onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+      📅 Mis Citas
+    </a>
+    <div style="height: 1px; background: #e8e8e8; margin: 8px 0;"></div>
+    <button id="logoutBtn" style="
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      color: #c62828;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins';
+      transition: background 0.2s;
+    " onmouseover="this.style.background='#ffebee'" onmouseout="this.style.background='transparent'">
+      🚪 Cerrar Sesión
+    </button>
+  </div>
+</div>
+
+<!-- Login/Register buttons (shown when not logged in) -->
+<div id="authButtons" style="display: none; gap: 10px;">
+  <a href="/login" style="
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    transition: all 0.3s ease;
+  " onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+    Iniciar Sesión
+  </a>
+  <a href="/registro" style="
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: white;
+    background: var(--primary);
+    transition: all 0.3s ease;
+  " onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">
+    Registrarse
+  </a>
+</div>
+
+<script>
+  import { getCurrentUser, logoutUser } from '../scripts/auth.js';
+  
+  const user = getCurrentUser();
+  const userMenuContainer = document.getElementById('userMenuContainer');
+  const authButtons = document.getElementById('authButtons');
+  const userDropdown = document.getElementById('userDropdown');
+  
+  if (user) {
+    userMenuContainer.style.display = 'flex';
+    authButtons.style.display = 'none';
+    
+    document.getElementById('userName').textContent = user.fullName.split(' ')[0];
+    document.getElementById('userAvatar').textContent = user.fullName.charAt(0).toUpperCase();
+    
+    // Toggle dropdown
+    userMenuContainer.querySelector('div').addEventListener('click', (e) => {
+      e.stopPropagation();
+      userDropdown.style.display = userDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Close dropdown on outside click
+    document.addEventListener('click', () => {
+      userDropdown.style.display = 'none';
+    });
+    
+    // Logout
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        logoutUser();
+        window.location.reload();
+      }
+    });
+  } else {
+    userMenuContainer.style.display = 'none';
+    authButtons.style.display = 'flex';
+  }
+</script>

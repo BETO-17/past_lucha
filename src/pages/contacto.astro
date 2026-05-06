@@ -1,0 +1,165 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SocialFloat from '../components/SocialFloat.astro';
+---
+
+<Layout title="Contacto">
+  <Header />
+  
+  <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%); padding: 40px 0;">
+    <div class="container">
+      <h1 class="section-title" style="margin-bottom: 0;">Contacto</h1>
+    </div>
+  </section>
+
+  <section style="padding: 60px 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+        <!-- Contact Info -->
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 30px;">Hablemos</h2>
+          
+          <div style="margin-bottom: 30px;">
+            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary);">📍 Dirección</h4>
+            <p style="color: var(--text-light); line-height: 1.7;">Calle Dulce Sabor 123, Colonia Postres, Ciudad de México, CP 01000</p>
+          </div>
+          
+          <div style="margin-bottom: 30px;">
+            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary);">📞 Teléfono</h4>
+            <p style="color: var(--text-light); line-height: 1.7;">+52 55 1234 5678</p>
+          </div>
+          
+          <div style="margin-bottom: 30px;">
+            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary);">✉️ Email</h4>
+            <p style="color: var(--text-light); line-height: 1.7;">hola@donalucha.com</p>
+          </div>
+          
+          <div style="margin-bottom: 30px;">
+            <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--primary);">🕐 Horario</h4>
+            <p style="color: var(--text-light); line-height: 1.7;">
+              Lunes - Viernes: 9:00 AM - 7:00 PM<br/>
+              Sábados: 10:00 AM - 4:00 PM<br/>
+              Domingos: Cerrado
+            </p>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div style="background: white; border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow);">
+          <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 25px;">Envíanos un Mensaje</h3>
+          <form id="contactForm">
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px;">Nombre</label>
+              <input type="text" name="name" required style="width: 100%; padding: 12px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Poppins';" />
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px;">Email</label>
+              <input type="email" name="email" required style="width: 100%; padding: 12px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Poppins';" />
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px;">Asunto</label>
+              <input type="text" name="subject" required style="width: 100%; padding: 12px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Poppins';" />
+            </div>
+            <div style="margin-bottom: 25px;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px;">Mensaje</label>
+              <textarea name="message" rows="5" required style="width: 100%; padding: 12px; border: 1.5px solid #e0e0e0; border-radius: var(--radius-sm); font-family: 'Poppins'; resize: vertical;"></textarea>
+            </div>
+            <button type="submit" style="width: 100%; background: var(--primary); color: white; padding: 14px; border-radius: 30px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='var(--primary-dark)'" onmouseout="this.style.background='var(--primary)'">
+              Enviar Mensaje
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SocialFloat />
+  <Footer />
+
+  <style>
+    @media (max-width: 768px) {
+      section:first-of-type {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) {
+        padding: 40px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      section:nth-of-type(2) .container > div > div:first-child h2 {
+        font-size: 1.3rem;
+      }
+
+      section:nth-of-type(2) .container > div > div:last-child {
+        padding: 30px 20px;
+      }
+
+      section:nth-of-type(2) .container > div > div:last-child h3 {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section:first-of-type {
+        padding: 20px 0;
+      }
+
+      section:nth-of-type(2) {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        gap: 20px;
+      }
+
+      section:nth-of-type(2) .container > div > div:first-child h2 {
+        font-size: 1.1rem;
+      }
+
+      section:nth-of-type(2) .container > div > div:last-child {
+        padding: 20px 15px;
+      }
+
+      section:nth-of-type(2) .container > div > div:last-child h3 {
+        font-size: 1rem;
+      }
+
+      #contactForm input,
+      #contactForm textarea {
+        padding: 10px;
+        font-size: 0.8rem;
+      }
+
+      #contactForm button {
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</Layout>
+
+<script>
+  import { addContact } from '../scripts/storage.js';
+  
+  document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    addContact({
+      name: formData.get('name'),
+      email: formData.get('email'),
+      subject: formData.get('subject'),
+      message: formData.get('message')
+    });
+    
+    alert('¡Mensaje enviado! Te contactaremos pronto.');
+    e.target.reset();
+  });
+</script>

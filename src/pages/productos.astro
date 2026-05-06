@@ -1,0 +1,203 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ProductCard from '../components/ProductCard.astro';
+import CategoryFilter from '../components/CategoryFilter.astro';
+import SocialFloat from '../components/SocialFloat.astro';
+
+// This will be populated from localStorage on client side
+// Server-side placeholder for initial render
+const allProducts = [
+  { id: 1, name: "Tarta de Chocolate Belga", price: 35.00, image: "/images/tarta-chocolate.jpg", category: "pasteles" },
+  { id: 2, name: "Cheesecake de Frutos Rojos", price: 40.00, image: "/images/cheesecake-frutos.jpg", category: "pasteles" },
+  { id: 3, name: "Caja de Galletas Surtidas (12u)", price: 18.00, image: "/images/galletas-surtidas.jpg", category: "galletas" },
+  { id: 4, name: "Cupcakes Gourmet (6u)", price: 22.00, image: "/images/cupcakes-gourmet.jpg", category: "cupcakes" },
+  { id: 5, name: "Tiramisú Artesanal", price: 15.00, image: "/images/tiramisu.jpg", category: "postres" },
+  { id: 6, name: "Alfajores de Maicena", price: 12.00, image: "/images/alfajores.jpg", category: "galletas" },
+  { id: 7, name: "Pastel de Zanahoria", price: 32.00, image: "/images/pastel-zanahoria.jpg", category: "pasteles" },
+  { id: 8, name: "Macarons Franceses (8u)", price: 16.00, image: "/images/macarons.jpg", category: "postres" },
+  { id: 9, name: "Brownies de Chocolate", price: 14.00, image: "/images/brownies.jpg", category: "postres" }
+];
+---
+
+<Layout title="Productos">
+  <Header />
+  
+  <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%); padding: 40px 0;">
+    <div class="container">
+      <h1 class="section-title" style="margin-bottom: 0;">Catálogo de Productos</h1>
+    </div>
+  </section>
+
+  <section style="padding: 40px 0;">
+    <div class="container">
+      <div style="display: flex; gap: 40px; align-items: flex-start;">
+        <!-- Sidebar -->
+        <aside style="min-width: 200px; position: sticky; top: 100px;">
+          <CategoryFilter />
+        </aside>
+
+        <!-- Product Grid -->
+        <div style="flex: 1;">
+          <div id="productsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
+            {allProducts.map(product => (
+              <ProductCard {...product} />
+            ))}
+          </div>
+          
+          <!-- Pagination -->
+          <div id="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 40px;">
+            <button style="padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #e0e0e0; color: var(--text);">&lt;</button>
+            <button style="padding: 8px 12px; border-radius: 8px; background: var(--primary); color: white; border: none;">1</button>
+            <button style="padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #e0e0e0; color: var(--text);">2</button>
+            <button style="padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #e0e0e0; color: var(--text);">3</button>
+            <button style="padding: 8px 12px; border-radius: 8px; background: white; border: 1px solid #e0e0e0; color: var(--text);">&gt;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SocialFloat />
+  <Footer />
+
+  <style>
+    @media (max-width: 768px) {
+      section:first-of-type {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      aside {
+        min-width: auto;
+        position: static;
+      }
+
+      #pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      #pagination button {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section:first-of-type {
+        padding: 20px 0;
+      }
+
+      section:nth-of-type(2) {
+        padding: 20px 0;
+      }
+
+      #pagination button {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</Layout>
+
+<script>
+  import { getProducts, getProductsByCategory } from '../scripts/storage.js';
+  
+  // Load products from localStorage and render
+  function loadProducts(category = 'todos') {
+    const products = getProductsByCategory(category);
+    const grid = document.getElementById('productsGrid');
+    
+    grid.innerHTML = products.map(product => `
+      <div class="product-card" style="
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)';">
+        <div style="position: relative; padding-top: 75%; overflow: hidden;">
+          <img 
+            src="${product.image}" 
+            alt="${product.name}"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+            loading="lazy"
+            onerror="this.src='https://via.placeholder.com/400x300/f8e1e8/c2185b?text=${encodeURIComponent(product.name)}'"
+          />
+        </div>
+        <div style="padding: 20px; text-align: center;">
+          <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: #333;">${product.name}</h3>
+          <p style="font-size: 1.1rem; font-weight: 700; color: #c2185b; margin-bottom: 15px;">
+            $${product.price.toFixed(2)}
+          </p>
+          <button 
+            onclick="addToCart(${product.id}, '${product.name}', ${product.price})"
+            style="
+              background: #c2185b;
+              color: white;
+              padding: 10px 24px;
+              border-radius: 20px;
+              font-weight: 500;
+              font-size: 0.85rem;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              border: none;
+              cursor: pointer;
+              transition: all 0.3s ease;
+            "
+            onmouseover="this.style.background='#880e4f'; this.style.transform='scale(1.05)';"
+            onmouseout="this.style.background='#c2185b'; this.style.transform='scale(1)';"
+          >
+            Añadir al carrito
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+  
+  window.addToCart = function(id, name, price) {
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const existing = cart.find(item => item.id === id);
+    
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push({ id, name, price, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.getElementById('cartCount');
+    if (badge) badge.textContent = count;
+    
+    // Show feedback
+    alert(`¡${name} añadido al carrito!`);
+  };
+  
+  // Category filter
+  document.querySelectorAll('input[name="category"]').forEach(checkbox => {
+    checkbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        // Uncheck others
+        document.querySelectorAll('input[name="category"]').forEach(cb => {
+          if (cb !== e.target) cb.checked = false;
+        });
+        loadProducts(e.target.value);
+      }
+    });
+  });
+  
+  // Initial load
+  loadProducts();
+</script>

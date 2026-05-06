@@ -1,0 +1,91 @@
+---
+interface Props {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+}
+
+const { id, name, price, image, category } = Astro.props;
+---
+
+<div class="product-card" style="
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-hover)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow)';">
+  <div style="position: relative; padding-top: 75%; overflow: hidden;">
+    <img 
+      src={image} 
+      alt={name}
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+      loading="lazy"
+    />
+  </div>
+  
+  <div style="padding: 20px; text-align: center;">
+    <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 8px; color: var(--text);">{name}</h3>
+    <p style="font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 15px;">
+      ${price.toFixed(2)}
+    </p>
+    <button 
+      class="add-to-cart"
+      data-id={id}
+      data-name={name}
+      data-price={price}
+      style="
+        background: var(--primary);
+        color: white;
+        padding: 10px 24px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: background 0.3s ease, transform 0.2s ease;
+      "
+      onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='scale(1.05)';"
+      onmouseout="this.style.background='var(--primary)'; this.style.transform='scale(1)';"
+    >
+      Añadir al carrito
+    </button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.add-to-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = e.currentTarget;
+      const id = parseInt(target.dataset.id);
+      const name = target.dataset.name;
+      const price = parseFloat(target.dataset.price);
+      
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existing = cart.find(item => item.id === id);
+      
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, name, price, quantity: 1 });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Update badge
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const badge = document.getElementById('cartCount');
+      if (badge) badge.textContent = count;
+      
+      // Feedback animation
+      target.textContent = '¡Añadido!';
+      target.style.background = '#4caf50';
+      setTimeout(() => {
+        target.textContent = 'Añadir al carrito';
+        target.style.background = 'var(--primary)';
+      }, 1500);
+    });
+  });
+</script>
