@@ -9,7 +9,7 @@ export default defineConfig({
   vite: {
       server: {
         allowedHosts: [
-          'commit-designing-asin-funk.trycloudflare.com'
+          'eva-thompson-about-don.trycloudflare.com'
         ]
       }
     }

@@ -1,0 +1,49 @@
+---
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'Todos' } = Astro.props;
+
+const categories = [
+  { id: 'todos', label: 'Todos' },
+  { id: 'pasteles', label: 'Pasteles' },
+  { id: 'galletas', label: 'Galletas' },
+  { id: 'cupcakes', label: 'Cupcakes' },
+  { id: 'postres', label: 'Postres Individuales' }
+];
+---
+
+<div style="min-width: 200px;">
+  <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">
+    Categorías
+  </h3>
+  
+  <div style="display: flex; flex-direction: column; gap: 12px;">
+    {categories.map(cat => (
+      <label style="
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: var(--radius-sm);
+        transition: background 0.2s ease;
+      " onmouseover="this.style.background='var(--primary-light)'" onmouseout="this.style.background='transparent'">
+        <input 
+          type="checkbox" 
+          name="category" 
+          value={cat.id}
+          checked={activeCategory === cat.id}
+          style="
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+          "
+        />
+        <span style="font-size: 0.95rem; color: var(--text);">{cat.label}</span>
+      </label>
+    ))}
+  </div>
+</div>

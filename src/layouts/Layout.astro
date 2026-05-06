@@ -1,161 +1,145 @@
 ---
-// layouts/Layout.astro
-export interface Props {
-  title?: string;
+interface Props {
+  title: string;
+  description?: string;
 }
-const { title = "Pastelería Doña Lucha" } = Astro.props;
+
+const { title, description = "Doña Lucha - Postres Cucharables. Pasteles, galletas y postres artesanales." } = Astro.props;
 ---
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="description" content={description} />
+  <title>{title} | Doña Lucha</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style is:global>
+    :root {
+      --primary: #c2185b;
+      --primary-light: #f8e1e8;
+      --primary-dark: #880e4f;
+      --secondary: #fce4ec;
+      --text: #333333;
+      --text-light: #666666;
+      --white: #ffffff;
+      --gray-bg: #f9f9f9;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--text);
+      background-color: var(--white);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Media Queries para responsividad */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 15px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Header responsivo */
+      header .container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px 15px;
+      }
+
+      header nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      header nav a {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+
+      header a[href="/"] {
+        order: -1; /* Logo primero */
+      }
+
+      header button {
+        align-self: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 10px;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      header .container {
+        padding: 10px;
+      }
+
+      header nav a {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <nav class="navbar-float">
-      <a href="/">Inicio</a>
-      <a href="#productos">Productos</a>
-      <a href="#appointment">Reserva cita</a>
-      <a href="#testimonios">Testimonios</a>
-      <a href="#contacto">Contacto</a>
-    
-      <a href="/login" class="session-icon" aria-label="Iniciar sesión">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="12" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
-    
-    </nav>
-  </header>
-
-  <main>
-    <slot />
-  </main>
-
-  <div class="social-float">
-    <a href="https://facebook.com/share/1CVHt6DCRj/" target="_blank" class="social-icon facebook" aria-label="Facebook">
-      <img src="/public/facebook.png" alt="Facebook" />
-    </a>
-    <a href="https://tiktok.com/@postreslucha" target="_blank" class="social-icon tiktok" aria-label="TikTok">
-      <img src="/public/tik-tok.png" alt="TikTok" />
-    </a>
-    <a href="https://instagram.com/postreslucha?igsh=c283emJuNmFoZmw0" target="_blank" class="social-icon instagram" aria-label="Instagram">
-      <img src="/public/instagram.png" alt="Instagram" />
-    </a>
-    <a href="https://wa.me/51983091360" target="_blank" class="social-icon whatsapp" aria-label="WhatsApp">
-      <img src="/public/whatsapp.png" alt="WhatsApp" />
-    </a>
-  </div>
-
-  <footer>
-    <p>© 2026 Pastelería Doña Lucha. Todos los derechos reservados. [cite: 57]</p>
-  </footer>
-
-  <script>
-    window.addEventListener('scroll', function() {
-      const header = document.querySelector('header');
-      if (header) {
-        window.scrollY > 50 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
-      }
-    });
-  </script>
+  <slot />
 </body>
 </html>
-
-<style is:global>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: #fff9f9;
-    padding-top: 80px;
-  }
-
-  /* Navegación */
-  header {
-    position: fixed; top: 0; left: 0; right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 2rem;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-  header.scrolled { padding: 0.5rem 2rem; }
-  nav.navbar-float { display: flex; justify-content: center; gap: 2rem; }
-  nav.navbar-float a { text-decoration: none; color: #333; font-weight: 500; padding: 0.5rem 1rem; border-radius: 20px; transition: 0.3s; }
-  nav.navbar-float a:hover { background: #fce4ec; color: #d63384; }
-
-  /* Iconos Flotantes */
-  .social-float {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .social-icon {
-    width: 55px; height: 55px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: white;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: 0.3s;
-    overflow: hidden;
-  }
-  .social-icon:hover { transform: scale(1.15); }
-  .social-icon img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Estilos del Icono de Sesión */
-.session-icon {
-  position: fixed; 
-  top: 90px;      
-  right: 20px;    
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* Mantenemos el color rosado de fondo desde el inicio */
-  background: #ff00ff; 
-  /* El color del icono (stroke) será blanco */
-  color: white; 
-  z-index: 1001;
-  box-shadow: 0 4px 10px rgba(255, 171, 251, 0.2);
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.session-icon svg {
-  width: 30px;
-  height: 30px;
-  /* Usamos currentColor para que herede el 'white' del padre */
-  stroke: currentColor; 
-}
-
-/* Al pasar el cursor, solo aplicamos un efecto de escala o brillo, 
-   sin cambiar los colores de fondo ni del icono */
-.session-icon:hover {
-  transform: scale(1.1);
-  filter: brightness(1.1); /* Esto le da un toque de luz sin ponerlo blanco */
-  background: #ff4081;    /* Forzamos que se mantenga el rosa */
-  color: white;           /* Forzamos que el icono siga blanco */
-}
-
-/* Ajuste para móviles */
-@media (max-width: 768px) {
-  .session-icon {
-    top: 80px; 
-    right: 15px;
-    width: 45px;
-    height: 45px;
-  }
-}
-
-</style>

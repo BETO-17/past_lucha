@@ -1,0 +1,338 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Calendar from '../components/Calendar.astro';
+import SocialFloat from '../components/SocialFloat.astro';
+---
+
+<Layout title="Reserva tu Cita">
+  <Header />
+  
+  <section style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%); padding: 40px 0;">
+    <div class="container" style="text-align: center;">
+      <div style="width: 100px; height: 100px; margin: 0 auto 20px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow);">
+        <img src="/public/images/logo.png" alt="Doña Lucha Logo" style="width: 100px; height: 100px; border-radius: 50%;" />
+      </div>
+      <h1 class="section-title" style="margin-bottom: 10px;">Reserva tu Cita para Consultoría de Pasteles Personalizados</h1>
+      <p style="color: var(--text-light); font-size: 1rem;">Elige la fecha y hora que mejor te convenga para crear tu obra dulce.</p>
+    </div>
+  </section>
+
+  <section style="padding: 40px 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start;">
+        <!-- Calendar -->
+        <Calendar />
+
+        <!-- Form -->
+        <div style="background: white; border-radius: var(--radius); padding: 30px; box-shadow: var(--shadow);">
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 25px;">Tus Detalles y Solicitudes</h3>
+          
+          <form id="bookingForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="grid-column: span 1;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Nombre Completo</label>
+              <input 
+                type="text" 
+                name="fullName"
+                placeholder="Nombre Completo"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: var(--radius-sm);
+                  font-family: 'Poppins', sans-serif;
+                  font-size: 0.9rem;
+                  transition: border-color 0.3s ease;
+                "
+                onfocus="this.style.borderColor='var(--primary)';"
+                onblur="this.style.borderColor='#e0e0e0';"
+              />
+            </div>
+            
+            <div style="grid-column: span 1;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Correo Electrónico</label>
+              <input 
+                type="email" 
+                name="email"
+                placeholder="correo@ejemplo.com"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: var(--radius-sm);
+                  font-family: 'Poppins', sans-serif;
+                  font-size: 0.9rem;
+                  transition: border-color 0.3s ease;
+                "
+                onfocus="this.style.borderColor='var(--primary)';"
+                onblur="this.style.borderColor='#e0e0e0';"
+              />
+            </div>
+            
+            <div style="grid-column: span 1;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Teléfono</label>
+              <input 
+                type="tel" 
+                name="phone"
+                placeholder="Teléfono"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: var(--radius-sm);
+                  font-family: 'Poppins', sans-serif;
+                  font-size: 0.9rem;
+                  transition: border-color 0.3s ease;
+                "
+                onfocus="this.style.borderColor='var(--primary)';"
+                onblur="this.style.borderColor='#e0e0e0';"
+              />
+            </div>
+            
+            <div style="grid-column: span 1;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Número de Invitados</label>
+              <input 
+                type="number" 
+                name="guests"
+                placeholder="0"
+                min="1"
+                required
+                style="
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: var(--radius-sm);
+                  font-family: 'Poppins', sans-serif;
+                  font-size: 0.9rem;
+                  transition: border-color 0.3s ease;
+                "
+                onfocus="this.style.borderColor='var(--primary)';"
+                onblur="this.style.borderColor='#e0e0e0';"
+              />
+            </div>
+            
+            <div style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Tipo de Evento</label>
+              <div style="position: relative;">
+                <select 
+                  name="eventType"
+                  required
+                  style="
+                    width: 100%;
+                    padding: 12px 15px;
+                    border: 1.5px solid #e0e0e0;
+                    border-radius: var(--radius-sm);
+                    font-family: 'Poppins', sans-serif;
+                    font-size: 0.9rem;
+                    appearance: none;
+                    background: white;
+                    cursor: pointer;
+                  "
+                >
+                  <option value="">Tipo de Evento</option>
+                  <option value="cumpleanos">Cumpleaños</option>
+                  <option value="boda">Boda</option>
+                  <option value="baby-shower">Baby Shower</option>
+                  <option value="aniversario">Aniversario</option>
+                  <option value="corporativo">Evento Corporativo</option>
+                  <option value="otro">Otro</option>
+                </select>
+                <span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none;">▼</span>
+              </div>
+            </div>
+            
+            <div style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Descripción de tu Idea y Solicitudes Específicas</label>
+              <textarea 
+                name="description"
+                rows="5"
+                placeholder="Cuéntanos sobre tu idea de pastel personalizado, temática, colores, sabores preferidos..."
+                style="
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 1.5px solid #e0e0e0;
+                  border-radius: var(--radius-sm);
+                  font-family: 'Poppins', sans-serif;
+                  font-size: 0.9rem;
+                  resize: vertical;
+                  transition: border-color 0.3s ease;
+                "
+                onfocus="this.style.borderColor='var(--primary)';"
+                onblur="this.style.borderColor='#e0e0e0';"
+              ></textarea>
+            </div>
+            
+            <div style="grid-column: span 2; margin-top: 10px;">
+              <button 
+                type="submit"
+                style="
+                  background: var(--primary);
+                  color: white;
+                  padding: 14px 40px;
+                  border-radius: 30px;
+                  font-weight: 600;
+                  font-size: 1rem;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                  border: none;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  width: 100%;
+                "
+                onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-2px)';"
+                onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';"
+              >
+                Confirmar Cita
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SocialFloat />
+  <Footer />
+
+  <style>
+    @media (max-width: 768px) {
+      section:first-of-type {
+        padding: 30px 0;
+      }
+
+      section:first-of-type .container div:first-child {
+        width: 80px;
+        height: 80px;
+      }
+
+      section:first-of-type .container div:first-child img {
+        width: 80px;
+        height: 80px;
+      }
+
+      section:first-of-type h1 {
+        font-size: 1.5rem !important;
+      }
+
+      section:first-of-type p {
+        font-size: 0.9rem !important;
+      }
+
+      section:nth-of-type(2) {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      #bookingForm {
+        grid-template-columns: 1fr !important;
+      }
+
+      #bookingForm div {
+        grid-column: span 1 !important;
+      }
+
+      #bookingForm textarea {
+        grid-column: span 1 !important;
+      }
+
+      #bookingForm button {
+        grid-column: span 1 !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section:first-of-type {
+        padding: 20px 0;
+      }
+
+      section:first-of-type .container div:first-child {
+        width: 60px;
+        height: 60px;
+      }
+
+      section:first-of-type .container div:first-child img {
+        width: 60px;
+        height: 60px;
+      }
+
+      section:first-of-type h1 {
+        font-size: 1.2rem !important;
+      }
+
+      section:first-of-type p {
+        font-size: 0.8rem !important;
+      }
+
+      section:nth-of-type(2) {
+        padding: 20px 0;
+      }
+
+      section:nth-of-type(2) .container > div > div:last-child {
+        padding: 20px;
+      }
+
+      #bookingForm {
+        gap: 15px;
+      }
+
+      #bookingForm input,
+      #bookingForm textarea {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+      }
+
+      #bookingForm button {
+        padding: 12px 30px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</Layout>
+
+<script>
+  import { addBooking } from '../scripts/storage.js';
+  
+  document.getElementById('bookingForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const date = localStorage.getItem('selectedDate');
+    const time = localStorage.getItem('selectedTime');
+    
+    if (!date || !time) {
+      alert('Por favor selecciona una fecha y hora en el calendario.');
+      return;
+    }
+    
+    const booking = {
+      fullName: formData.get('fullName'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      guests: parseInt(formData.get('guests')),
+      eventType: formData.get('eventType'),
+      description: formData.get('description'),
+      date: date,
+      time: time
+    };
+    
+    addBooking(booking);
+    
+    // Clear selections
+    localStorage.removeItem('selectedDate');
+    localStorage.removeItem('selectedTime');
+    
+    alert('¡Cita confirmada exitosamente! Te contactaremos pronto.');
+    e.target.reset();
+    
+    // Refresh calendar
+    location.reload();
+  });
+</script>

@@ -1,111 +1,222 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Welcome from '../components/Welcome.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import ProductCard from '../components/ProductCard.astro';
-import Testimonials from '../components/Testimonials.astro';
-import Appointment from '../components/Appointment.astro';
-import InstagramFeed from '../components/InstagramFeed.astro';
+import SocialFloat from '../components/SocialFloat.astro';
 
-// 1. IMPORTAR EL CLIENTE
-import { supabaseServer } from '../lib/supabase';
-
-let connectionStatus = "Verificando...";
-let dataError = null;
-
-try {
-  // Intentamos la consulta
-  const { data, error } = await supabaseServer
-    .from('productos') 
-    .select('*')
-    .limit(1);
-
-  if (error) {
-    dataError = error.message;
-    connectionStatus = "Error de conexión ❌";
-  } else {
-    connectionStatus = "Conexión exitosa ✅";
-  }
-} catch (e) {
-  dataError = e instanceof Error ? e.message : "Error desconocido";
-  connectionStatus = "Error crítico ❌";
-}
-
-const productos = [
-  {
-    name: 'Torta Selva Negra',
-    image: '/images/selva-negra.jpg',
-    description: 'Bizcocho de chocolate, cerezas y crema chantilly.',
-    price: 65.00,
-  },
-  {
-    name: 'Cheesecake de Maracuyá',
-    image: '/images/cheesecake.jpg',
-    description: 'Suave cheesecake con cobertura de maracuyá.',
-    price: 45.00,
-  },
-  {
-    name: 'Macarons (caja x12)',
-    image: '/images/macarons.jpg',
-    description: 'Surtido de sabores: frambuesa, pistacho y chocolate.',
-    price: 35.00,
-  },
-  {
-    name: 'Tarta de Frutas',
-    image: '/images/tarta-frutas.jpg',
-    description: 'Base de masa quebrada, crema pastelera y frutas frescas.',
-    price: 50.00,
-  },
+// Get featured products from localStorage (will be populated by client script)
+const featuredProducts = [
+  { id: 1, name: "Tarta de Chocolate Belga", price: 35.00, image: "/images/tarta-chocolate.jpg", category: "pasteles" },
+  { id: 2, name: "Cheesecake de Frutos Rojos", price: 40.00, image: "/images/cheesecake-frutos.jpg", category: "pasteles" },
+  { id: 3, name: "Caja de Galletas Surtidas", price: 18.00, image: "/images/galletas-surtidas.jpg", category: "galletas" },
+  { id: 4, name: "Cupcakes Gourmet", price: 22.00, image: "/images/cupcakes-gourmet.jpg", category: "cupcakes" }
 ];
 ---
 
-<Layout title="Pastelería - Test Conexión">
+<Layout title="Inicio">
+  <Header />
   
-  <div class="debug-status">
-    <p>Estado DB: <strong>{connectionStatus}</strong></p>
-    {dataError && <p class="error-msg">Detalle: {dataError}</p>}
-  </div>
+  <!-- Hero Section -->
+  <section style="
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%);
+    padding: 80px 0;
+    text-align: center;
+  ">
+    <div class="container">
+      <div style="max-width: 600px; margin: 0 auto;">
+        
+        <div style="width: 120px; height: 120px; margin: 0 auto 30px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow);">
+          <img src="/public/images/logo.png" alt="Doña Lucha Logo" style="width: 100px; height: 100px; border-radius: 50%;" />
+        </div>
 
-  <Welcome />
-
-  <section id="productos" class="productos">
-    <h2>Nuestros productos estrella</h2>
-    <div class="grid">
-      {productos.map((prod) => (
-        <ProductCard {...prod} />
-      ))}
+        <h1 style="font-size: 2.5rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 15px;">
+          Doña Lucha
+        </h1>
+        <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 30px;">
+          Postres Cuchareables
+        </p>
+        <p style="font-size: 1rem; color: var(--text); margin-bottom: 40px; line-height: 1.8;">
+          Endulzamos tus momentos especiales con creaciones artesanales hechas con amor y los mejores ingredientes.
+        </p>
+        <div style="display: flex; gap: 15px; justify-content: center;">
+          <a href="/productos" style="
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+          " onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
+            Ver Productos
+          </a>
+          <a href="/reserva" style="
+            background: white;
+            color: var(--primary);
+            padding: 14px 32px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+          " onmouseover="this.style.background='var(--primary-light)';" onmouseout="this.style.background='white';">
+            Reservar Cita
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <Testimonials />
-  <Appointment />
-  <InstagramFeed />
+  <!-- Featured Products -->
+  <section style="padding: 60px 0;">
+    <div class="container">
+      <h2 class="section-title">Nuestros Favoritos</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
+        {featuredProducts.map(product => (
+          <ProductCard {...product} />
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="/productos" style="
+          display: inline-block;
+          color: var(--primary);
+          font-weight: 600;
+          font-size: 1rem;
+          border-bottom: 2px solid var(--primary);
+          padding-bottom: 5px;
+          transition: all 0.3s ease;
+        " onmouseover="this.style.color='var(--primary-dark)'; this.style.borderColor='var(--primary-dark)';" onmouseout="this.style.color='var(--primary)'; this.style.borderColor='var(--primary)';">
+          Ver catálogo completo →
+        </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Features -->
+  <section style="background: var(--gray-bg); padding: 60px 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; text-align: center;">
+        <div>
+          <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Ingredientes Premium</h3>
+          <p style="color: var(--text-light); font-size: 0.9rem;">Seleccionamos los mejores ingredientes para garantizar calidad y sabor.</p>
+        </div>
+        <div>
+          <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Entrega Puntual</h3>
+          <p style="color: var(--text-light); font-size: 0.9rem;">Respetamos tus tiempos. Entregamos en la fecha y hora acordada.</p>
+        </div>
+        <div>
+          <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 10px;">Hecho con Amor</h3>
+          <p style="color: var(--text-light); font-size: 0.9rem;">Cada postre es una obra de arte hecha con dedicación y cariño.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <SocialFloat />
+  <Footer />
+
+  <style>
+    @media (max-width: 768px) {
+      /* Hero Section */
+      section:first-of-type {
+        padding: 60px 0;
+      }
+
+      section:first-of-type h1 {
+        font-size: 2rem !important;
+      }
+
+      section:first-of-type p:first-of-type {
+        font-size: 1rem !important;
+      }
+
+      section:first-of-type p:nth-of-type(2) {
+        font-size: 0.9rem !important;
+        margin-bottom: 30px !important;
+      }
+
+      section:first-of-type div:last-child {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+
+      section:first-of-type a {
+        padding: 12px 24px !important;
+        font-size: 0.9rem !important;
+      }
+
+      /* Featured Products */
+      section:nth-of-type(2) {
+        padding: 40px 0 !important;
+      }
+
+      /* Features */
+      section:nth-of-type(3) {
+        padding: 40px 0 !important;
+      }
+
+      section:nth-of-type(3) h3 {
+        font-size: 1rem !important;
+      }
+
+      section:nth-of-type(3) p {
+        font-size: 0.8rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section:first-of-type {
+        padding: 40px 0;
+      }
+
+      section:first-of-type h1 {
+        font-size: 1.5rem !important;
+      }
+
+      section:first-of-type p:first-of-type {
+        font-size: 0.9rem !important;
+      }
+
+      section:first-of-type p:nth-of-type(2) {
+        font-size: 0.8rem !important;
+        margin-bottom: 20px !important;
+      }
+
+      section:first-of-type a {
+        padding: 10px 20px !important;
+        font-size: 0.8rem !important;
+      }
+
+      section:nth-of-type(2) {
+        padding: 30px 0 !important;
+      }
+
+      section:nth-of-type(3) {
+        padding: 30px 0 !important;
+      }
+
+      section:nth-of-type(3) h3 {
+        font-size: 0.9rem !important;
+      }
+
+      section:nth-of-type(3) p {
+        font-size: 0.7rem !important;
+      }
+    }
+  </style>
 </Layout>
-
-<style>
-  .debug-status {
-    background: #f0f0f0;
-    padding: 10px;
-    text-align: center;
-    font-size: 0.8rem;
-    border-bottom: 1px solid #ccc;
-  }
-  .error-msg {
-    color: red;
-  }
-  .productos {
-    padding: 3rem 2rem;
-    text-align: center;
-  }
-  .productos h2 {
-    margin-bottom: 2rem;
-    color: #d63384;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-</style>
