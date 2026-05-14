@@ -173,9 +173,16 @@ const INITIAL_TESTIMONIALS = [
 const INITIAL_USERS = [
   {
     id: 1,
+    fullName: "Administrador",
+    email: "admin@donalucha.com",
+    password: "admin123",
+    createdAt: "2023-01-01T00:00:00.000Z",
+    role: "admin"
+  },
+  {
+    id: 2,
     fullName: "Usuario Demo",
     email: "demo@donalucha.com",
-    phone: "+52 55 1234 5678",
     password: "demo123",
     createdAt: "2023-01-01T00:00:00.000Z",
     role: "customer"
@@ -215,6 +222,26 @@ export function initStorage() {
   // Initialize users if not exists
   if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(INITIAL_USERS));
+  } else {
+    const users = getUsers();
+    const adminIndex = users.findIndex(user => user.email === 'admin@donalucha.com');
+
+    if (adminIndex === -1) {
+      users.unshift(INITIAL_USERS[0]);
+    } else {
+      users[adminIndex] = {
+        ...users[adminIndex],
+        ...INITIAL_USERS[0],
+      };
+    }
+
+    const normalizedUsers = users.map(user => ({
+      ...user,
+      email: user.email?.trim().toLowerCase() || user.email,
+      role: user.role || 'customer',
+    }));
+
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(normalizedUsers));
   }
 
   console.log('✅ Storage initialized with seed data');
@@ -389,7 +416,8 @@ export function getUsers() {
 }
 
 export function getUserByEmail(email) {
-  return getUsers().find(u => u.email === email);
+  const normalizedEmail = email.trim().toLowerCase();
+  return getUsers().find(u => u.email?.toLowerCase() === normalizedEmail);
 }
 
 export function getUserById(id) {
@@ -397,16 +425,20 @@ export function getUserById(id) {
 }
 
 export function registerUser(userData) {
+  initStorage();
+
   const users = getUsers();
+  const normalizedEmail = userData.email.trim().toLowerCase();
 
   // Check if email already exists
-  if (users.find(u => u.email === userData.email)) {
+  if (users.find(u => u.email?.toLowerCase() === normalizedEmail)) {
     throw new Error('Este correo ya está registrado');
   }
 
   const newUser = {
     id: Date.now(),
     ...userData,
+    email: normalizedEmail,
     role: 'customer',
     createdAt: new Date().toISOString()
   };
@@ -417,7 +449,11 @@ export function registerUser(userData) {
 }
 
 export function loginUser(email, password) {
-  const user = getUsers().find(u => u.email === email && u.password === password);
+  initStorage();
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPassword = password.trim();
+  const user = getUsers().find(u => u.email.toLowerCase() === normalizedEmail && u.password === normalizedPassword);
   if (!user) {
     throw new Error('Correo o contraseña incorrectos');
   }

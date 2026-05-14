@@ -255,6 +255,31 @@ import Layout from '../layouts/Layout.astro';
 </Layout>
 
 <script>
+  import { getSession, loginUser } from '../scripts/storage.js';
+
+  document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    try {
+      const session = loginUser(String(email), String(password));
+
+      if (!formData.get('remember')) {
+        localStorage.removeItem('session');
+        sessionStorage.setItem('session', JSON.stringify(session));
+      }
+
+      alert(`Bienvenido de nuevo, ${session.name}!`);
+      window.location.href = session.role === 'admin' ? '/admin' : '/';
+    } catch (error) {
+      alert(`${error.message}. ¿No tienes cuenta? Regístrate.`);
+    }
+  }, { capture: true });
+
   document.getElementById('loginForm')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -289,8 +314,8 @@ import Layout from '../layouts/Layout.astro';
   });
 
   // Check if already logged in
-  const session = JSON.parse(localStorage.getItem('session') || sessionStorage.getItem('session') || 'null');
+  const session = getSession();
   if (session) {
-    window.location.href = '/';
+    window.location.href = session.role === 'admin' ? '/admin' : '/';
   }
 </script>

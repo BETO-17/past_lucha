@@ -40,7 +40,7 @@ const allProducts = [
 
         <!-- Product Grid -->
         <div style="flex: 1;">
-          <div id="productsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
+          <div id="productsGrid" class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
             {allProducts.map(product => (
               <ProductCard {...product} />
             ))}

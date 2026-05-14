@@ -165,32 +165,6 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </div>
 
-          <!-- Phone -->
-          <div style="margin-bottom: 20px;">
-            <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 8px;">Teléfono</label>
-            <div style="position: relative;">
-              <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 1rem;">📱</span>
-              <input 
-                type="tel" 
-                name="phone"
-                placeholder="+52 55 1234 5678"
-                required
-                style="
-                  width: 100%;
-                  padding: 14px 14px 14px 45px;
-                  border: 1.5px solid #e8e8e8;
-                  border-radius: 12px;
-                  font-family: 'Poppins', sans-serif;
-                  font-size: 0.95rem;
-                  background: #fafafa;
-                  transition: all 0.3s ease;
-                  outline: none;
-                "
-                onfocus="this.style.borderColor='var(--primary)'; this.style.background='white'; this.style.boxShadow='0 0 0 3px rgba(194, 24, 91, 0.1)';"
-                onblur="this.style.borderColor='#e8e8e8'; this.style.background='#fafafa'; this.style.boxShadow='none';"
-              />
-            </div>
-          </div>
 
           <!-- Password -->
           <div style="margin-bottom: 20px;">
@@ -341,7 +315,196 @@ import Layout from '../layouts/Layout.astro';
   </div>
 </Layout>
 
+<style>
+  @media (max-width: 768px) {
+    div[style*="min-height: 100vh"] {
+      flex-direction: column;
+    }
+
+    div[style*="flex: 1"][style*="background: linear-gradient"] {
+      flex: none;
+      min-height: 50vh;
+      padding: 40px 20px;
+    }
+
+    div[style*="flex: 1"][style*="background: white"] {
+      flex: none;
+      padding: 40px 20px;
+    }
+
+    /* Navigation mini */
+    nav[style*="position: absolute"] {
+      display: none;
+    }
+
+    /* Logo */
+    div[style*="margin-bottom: 40px"] {
+      margin-bottom: 20px;
+    }
+
+    div[style*="width: 140px"] {
+      width: 100px !important;
+      height: 100px !important;
+    }
+
+    svg[viewBox="0 0 100 100"] {
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    div[style*="font-size: 1.4rem"] {
+      font-size: 1.1rem !important;
+    }
+
+    div[style*="font-size: 0.7rem"] {
+      font-size: 0.6rem !important;
+    }
+
+    /* Tagline */
+    h2[style*="font-size: 1.8rem"] {
+      font-size: 1.4rem !important;
+    }
+
+    p[style*="font-size: 0.95rem"] {
+      font-size: 0.85rem !important;
+    }
+
+    /* CTA Button */
+    a[href="/productos"][style*="padding: 12px 35px"] {
+      padding: 10px 25px !important;
+      font-size: 0.8rem !important;
+    }
+
+    /* Stats */
+    div[style*="display: flex; gap: 40px"] {
+      gap: 20px !important;
+    }
+
+    div[style*="font-size: 1.8rem"] {
+      font-size: 1.4rem !important;
+    }
+
+    div[style*="font-size: 0.75rem"] {
+      font-size: 0.65rem !important;
+    }
+
+    /* Footer text */
+    div[style*="margin-top: 40px"] {
+      margin-top: 20px !important;
+    }
+
+    div[style*="font-size: 1.3rem"] {
+      font-size: 1rem !important;
+    }
+
+    div[style*="font-size: 0.85rem"] {
+      font-size: 0.75rem !important;
+    }
+
+    /* Form */
+    h1[style*="font-size: 2.2rem"] {
+      font-size: 1.8rem !important;
+    }
+
+    p[style*="font-size: 0.95rem"] {
+      font-size: 0.85rem !important;
+    }
+
+    /* Social buttons */
+    div[style*="display: flex; gap: 15px; margin-bottom: 30px;"] {
+      flex-direction: column !important;
+      gap: 10px !important;
+    }
+
+    button[type="button"][style*="flex: 1"] {
+      width: 100% !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    div[style*="flex: 1"][style*="background: linear-gradient"] {
+      padding: 30px 15px;
+    }
+
+    div[style*="flex: 1"][style*="background: white"] {
+      padding: 30px 15px;
+    }
+
+    /* Logo */
+    div[style*="width: 140px"] {
+      width: 80px !important;
+      height: 80px !important;
+    }
+
+    svg[viewBox="0 0 100 100"] {
+      width: 50px !important;
+      height: 50px !important;
+    }
+
+    div[style*="font-size: 1.4rem"] {
+      font-size: 1rem !important;
+    }
+
+    /* Tagline */
+    h2[style*="font-size: 1.8rem"] {
+      font-size: 1.2rem !important;
+    }
+
+    /* Stats */
+    div[style*="display: flex; gap: 40px"] {
+      gap: 15px !important;
+    }
+
+    /* Form */
+    h1[style*="font-size: 2.2rem"] {
+      font-size: 1.5rem !important;
+    }
+  }
+</style>
+
 <script>
+  import { getSession, registerUser } from '../scripts/storage.js';
+
+  document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const formData = new FormData(e.currentTarget);
+    const fullName = String(formData.get('fullName') || '').trim();
+    const email = String(formData.get('email') || '').trim();
+    const password = String(formData.get('password') || '');
+    const confirmPassword = String(formData.get('confirmPassword') || '');
+
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden.');
+      return;
+    }
+
+    if (password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
+    try {
+      const newUser = registerUser({ fullName, email, password });
+      const session = {
+        id: newUser.id,
+        name: newUser.fullName,
+        email: newUser.email,
+        role: newUser.role,
+        loggedInAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('session', JSON.stringify(session));
+      sessionStorage.removeItem('session');
+
+      alert(`Bienvenido, ${fullName}! Tu cuenta ha sido creada exitosamente.`);
+      window.location.href = '/';
+    } catch (error) {
+      alert(error.message);
+    }
+  }, { capture: true });
+
   // Password strength indicator
   document.getElementById('regPassword')?.addEventListener('input', (e) => {
     const password = e.target.value;
@@ -381,7 +544,6 @@ import Layout from '../layouts/Layout.astro';
 
     const fullName = formData.get('fullName');
     const email = formData.get('email');
-    const phone = formData.get('phone');
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
 
@@ -410,7 +572,6 @@ import Layout from '../layouts/Layout.astro';
       id: Date.now(),
       fullName,
       email,
-      phone,
       password,
       createdAt: new Date().toISOString()
     };
@@ -432,8 +593,8 @@ import Layout from '../layouts/Layout.astro';
   });
 
   // Check if already logged in
-  const session = JSON.parse(localStorage.getItem('session') || sessionStorage.getItem('session') || 'null');
+  const session = getSession();
   if (session) {
-    window.location.href = '/';
+    window.location.href = session.role === 'admin' ? '/admin' : '/';
   }
 </script>
