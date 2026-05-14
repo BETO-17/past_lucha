@@ -71,28 +71,7 @@ import SocialFloat from '../components/SocialFloat.astro';
                 onblur="this.style.borderColor='#e0e0e0';"
               />
             </div>
-            
-            <div style="grid-column: span 1;">
-              <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Teléfono</label>
-              <input 
-                type="tel" 
-                name="phone"
-                placeholder="Teléfono"
-                required
-                style="
-                  width: 100%;
-                  padding: 12px 15px;
-                  border: 1.5px solid #e0e0e0;
-                  border-radius: var(--radius-sm);
-                  font-family: 'Poppins', sans-serif;
-                  font-size: 0.9rem;
-                  transition: border-color 0.3s ease;
-                "
-                onfocus="this.style.borderColor='var(--primary)';"
-                onblur="this.style.borderColor='#e0e0e0';"
-              />
-            </div>
-            
+        
             <div style="grid-column: span 1;">
               <label style="display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--text);">Número de Invitados</label>
               <input 
@@ -214,6 +193,115 @@ import SocialFloat from '../components/SocialFloat.astro';
         height: 80px;
       }
 
+      .section-title {
+        font-size: 1.3rem;
+      }
+
+      section:first-of-type .container p {
+        font-size: 0.9rem;
+      }
+
+      section:nth-of-type(2) {
+        padding: 30px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      #bookingForm {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+      }
+
+      #bookingForm div[style*="grid-column: span 1"] {
+        grid-column: span 1 !important;
+      }
+
+      #bookingForm div[style*="grid-column: span 2"] {
+        grid-column: span 1 !important;
+      }
+
+      #bookingForm input, #bookingForm select, #bookingForm textarea {
+        padding: 10px 12px !important;
+        font-size: 0.85rem !important;
+      }
+
+      #bookingForm button {
+        padding: 12px 30px !important;
+        font-size: 0.9rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section:first-of-type {
+        padding: 20px 0;
+      }
+
+      section:first-of-type .container div:first-child {
+        width: 60px;
+        height: 60px;
+      }
+
+      section:first-of-type .container div:first-child img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+      }
+
+      section:first-of-type .container p {
+        font-size: 0.8rem;
+      }
+
+      section:nth-of-type(2) {
+        padding: 20px 0;
+      }
+
+      section:nth-of-type(2) .container > div {
+        gap: 20px;
+      }
+
+      #bookingForm {
+        gap: 12px !important;
+      }
+
+      h3 {
+        font-size: 1rem !important;
+        margin-bottom: 20px !important;
+      }
+
+      #bookingForm input, #bookingForm select, #bookingForm textarea {
+        padding: 8px 10px !important;
+        font-size: 0.8rem !important;
+      }
+
+      #bookingForm button {
+        padding: 10px 25px !important;
+        font-size: 0.85rem !important;
+      }
+    }
+  </style>
+
+  <style>
+    @media (max-width: 768px) {
+      section:first-of-type {
+        padding: 30px 0;
+      }
+
+      section:first-of-type .container div:first-child {
+        width: 80px;
+        height: 80px;
+      }
+
+      section:first-of-type .container div:first-child img {
+        width: 80px;
+        height: 80px;
+      }
+
       section:first-of-type h1 {
         font-size: 1.5rem !important;
       }
@@ -315,7 +403,6 @@ import SocialFloat from '../components/SocialFloat.astro';
     const booking = {
       fullName: formData.get('fullName'),
       email: formData.get('email'),
-      phone: formData.get('phone'),
       guests: parseInt(formData.get('guests')),
       eventType: formData.get('eventType'),
       description: formData.get('description'),

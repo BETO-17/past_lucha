@@ -7,294 +7,83 @@ import SocialFloat from '../components/SocialFloat.astro';
 
 <Layout title="Mi Perfil">
   <Header />
-  
-  <section Veo que necesitas un sistema completo de **Inicio de Sesión y Registro** para usuarios. Voy a crear todos los archivos necesarios con almacenamiento en `localStorage`, preparados para migrar a base de datos posteriormente.
 
----
+  <main class="profile-page">
+    <section class="container profile-card">
+      <p class="eyebrow">Cuenta</p>
+      <h1>Mi Perfil</h1>
+      <p>
+        Inicia sesion para ver y administrar los datos de tu cuenta.
+      </p>
+      <div class="actions">
+        <a class="primary-link" href="/login">Iniciar sesion</a>
+        <a class="secondary-link" href="/registro">Crear cuenta</a>
+      </div>
+    </section>
+  </main>
 
-## 1. `src/scripts/auth.js` - Módulo de Autenticación
+  <SocialFloat />
+  <Footer />
+</Layout>
 
-```javascript
-// ==========================================
-// AUTHENTICATION MODULE
-// LocalStorage-based, ready for DB migration
-// ==========================================
-
-const AUTH_KEYS = {
-  USERS: 'auth_users',
-  CURRENT_USER: 'auth_current_user',
-  SESSIONS: 'auth_sessions'
-};
-
-// ==========================================
-// INITIAL SEED DATA (Admin user)
-// ==========================================
-
-const INITIAL_USERS = [
-  {
-    id: 1,
-    fullName: "Administrador",
-    email: "admin@donalucha.com",
-    password: "admin123", // En producción: hash con bcrypt
-    phone: "+52 55 1234 5678",
-    role: "admin",
-    avatar: null,
-    createdAt: "2023-01-01T00:00:00Z",
-    lastLogin: null,
-    isActive: true
+<style>
+  .profile-page {
+    min-height: 60vh;
+    background: #fff7fa;
+    padding: 96px 20px;
   }
-];
 
-// ==========================================
-// INITIALIZATION
-// ==========================================
-
-export function initAuth() {
-  if (!localStorage.getItem(AUTH_KEYS.USERS)) {
-    localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(INITIAL_USERS));
+  .profile-card {
+    max-width: 720px;
+    background: #ffffff;
+    border: 1px solid #f3d4df;
+    border-radius: 8px;
+    padding: 48px;
+    box-shadow: 0 8px 24px rgba(136, 14, 79, 0.08);
   }
-  console.log('✅ Auth system initialized');
-}
 
-// ==========================================
-// USER REGISTRATION
-// ==========================================
-
-export function registerUser(userData) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  
-  // Check if email already exists
-  if (users.find(u => u.email.toLowerCase() === userData.email.toLowerCase())) {
-    return { success: false, error: 'Este correo ya está registrado' };
+  .eyebrow {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    text-transform: uppercase;
   }
-  
-  const newUser = {
-    id: Date.now(),
-    fullName: userData.fullName,
-    email: userData.email.toLowerCase(),
-    password: userData.password, // En producción: hash
-    phone: userData.phone || '',
-    role: 'customer',
-    avatar: null,
-    createdAt: new Date().toISOString(),
-    lastLogin: null,
-    isActive: true
-  };
-  
-  users.push(newUser);
-  localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
-  
-  // Auto-login after registration
-  const session = createSession(newUser);
-  
-  return { 
-    success: true, 
-    user: { ...newUser, password: undefined },
-    token: session.token
-  };
-}
 
-// ==========================================
-// USER LOGIN
-// ==========================================
-
-export function loginUser(email, password, rememberMe = false) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-  
-  if (!user) {
-    return { success: false, error: 'Usuario no encontrado' };
+  h1 {
+    color: var(--primary-dark);
+    font-size: 2.4rem;
+    margin-bottom: 12px;
   }
-  
-  if (!user.isActive) {
-    return { success: false, error: 'Cuenta desactivada' };
+
+  .profile-card p:not(.eyebrow) {
+    color: var(--text-light);
+    font-size: 1rem;
+    max-width: 520px;
   }
-  
-  if (user.password !== password) {
-    return { success: false, error: 'Contraseña incorrecta' };
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
   }
-  
-  // Update last login
-  user.lastLogin = new Date().toISOString();
-  localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
-  
-  // Create session
-  const session = createSession(user, rememberMe);
-  
-  return {
-    success: true,
-    user: { ...user, password: undefined },
-    token: session.token
-  };
-}
 
-// ==========================================
-// SOCIAL LOGIN (Simulated)
-// ==========================================
-
-export function socialLogin(provider, profile) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  let user = users.find(u => u.email.toLowerCase() === profile.email.toLowerCase());
-  
-  if (!user) {
-    // Auto-register social user
-    user = {
-      id: Date.now(),
-      fullName: profile.name,
-      email: profile.email.toLowerCase(),
-      password: `social_${provider}_${Date.now()}`, // Random secure password
-      phone: '',
-      role: 'customer',
-      avatar: profile.avatar || null,
-      provider: provider,
-      socialId: profile.id,
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
-      isActive: true
-    };
-    users.push(user);
-    localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
-  } else {
-    user.lastLogin = new Date().toISOString();
-    user.provider = provider;
-    localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
+  .primary-link,
+  .secondary-link {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 12px 20px;
   }
-  
-  const session = createSession(user);
-  
-  return {
-    success: true,
-    user: { ...user, password: undefined },
-    token: session.token
-  };
-}
 
-// ==========================================
-// SESSION MANAGEMENT
-// ==========================================
-
-function createSession(user, rememberMe = false) {
-  const token = `token_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  const expiresAt = rememberMe 
-    ? Date.now() + (30 * 24 * 60 * 60 * 1000) // 30 days
-    : Date.now() + (24 * 60 * 60 * 1000); // 24 hours
-  
-  const session = {
-    token,
-    userId: user.id,
-    expiresAt,
-    rememberMe
-  };
-  
-  localStorage.setItem(AUTH_KEYS.CURRENT_USER, JSON.stringify(session));
-  
-  // Also store in sessions list for multi-device support (future)
-  const sessions = JSON.parse(localStorage.getItem(AUTH_KEYS.SESSIONS) || '[]');
-  sessions.push(session);
-  localStorage.setItem(AUTH_KEYS.SESSIONS, JSON.stringify(sessions));
-  
-  return session;
-}
-
-export function getCurrentUser() {
-  const session = JSON.parse(localStorage.getItem(AUTH_KEYS.CURRENT_USER) || 'null');
-  
-  if (!session) return null;
-  
-  // Check expiration
-  if (session.expiresAt < Date.now()) {
-    logoutUser();
-    return null;
+  .primary-link {
+    background: var(--primary);
+    color: #ffffff;
   }
-  
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  const user = users.find(u => u.id === session.userId);
-  
-  if (!user || !user.isActive) {
-    logoutUser();
-    return null;
+
+  .secondary-link {
+    border: 1px solid var(--primary);
+    color: var(--primary);
   }
-  
-  return { ...user, password: undefined };
-}
-
-export function isLoggedIn() {
-  return getCurrentUser() !== null;
-}
-
-export function isAdmin() {
-  const user = getCurrentUser();
-  return user?.role === 'admin';
-}
-
-export function logoutUser() {
-  localStorage.removeItem(AUTH_KEYS.CURRENT_USER);
-}
-
-// ==========================================
-// PASSWORD RECOVERY (Simulated)
-// ==========================================
-
-export function requestPasswordReset(email) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-  
-  if (!user) {
-    return { success: false, error: 'Usuario no encontrado' };
-  }
-  
-  // In production: send email with reset token
-  // For now: simulate success
-  return { success: true, message: 'Se ha enviado un enlace de recuperación a tu correo' };
-}
-
-// ==========================================
-// PROFILE MANAGEMENT
-// ==========================================
-
-export function updateProfile(userId, updates) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  const index = users.findIndex(u => u.id === userId);
-  
-  if (index === -1) {
-    return { success: false, error: 'Usuario no encontrado' };
-  }
-  
-  users[index] = { ...users[index], ...updates, id: users[index].id };
-  localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
-  
-  return { success: true, user: { ...users[index], password: undefined } };
-}
-
-export function changePassword(userId, currentPassword, newPassword) {
-  const users = JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]');
-  const user = users.find(u => u.id === userId);
-  
-  if (!user || user.password !== currentPassword) {
-    return { success: false, error: 'Contraseña actual incorrecta' };
-  }
-  
-  user.password = newPassword;
-  localStorage.setItem(AUTH_KEYS.USERS, JSON.stringify(users));
-  
-  return { success: true };
-}
-
-// ==========================================
-// DB MIGRATION HELPERS
-// ==========================================
-
-export function exportAuthData() {
-  return {
-    users: JSON.parse(localStorage.getItem(AUTH_KEYS.USERS) || '[]').map(u => ({
-      ...u,
-      password: '[HASHED]' // Never export real passwords
-    })),
-    sessions: JSON.parse(localStorage.getItem(AUTH_KEYS.SESSIONS) || '[]')
-  };
-}
-
-// Auto-initialize
-if (typeof window !== 'undefined') {
-  initAuth();
-}
+</style>

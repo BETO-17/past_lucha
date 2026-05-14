@@ -40,7 +40,7 @@ const featuredProducts = [
           Endulzamos tus momentos especiales con creaciones artesanales hechas con amor y los mejores ingredientes.
         </p>
         <div style="display: flex; gap: 15px; justify-content: center;">
-          <a href="/productos" style="
+          <a href="/productos" class="btn" style="
             background: var(--primary);
             color: white;
             padding: 14px 32px;
@@ -50,7 +50,7 @@ const featuredProducts = [
           " onmouseover="this.style.background='var(--primary-dark)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.background='var(--primary)'; this.style.transform='translateY(0)';">
             Ver Productos
           </a>
-          <a href="/reserva" style="
+          <a href="/reserva" class="btn" style="
             background: white;
             color: var(--primary);
             padding: 14px 32px;
@@ -70,7 +70,7 @@ const featuredProducts = [
   <section style="padding: 60px 0;">
     <div class="container">
       <h2 class="section-title">Nuestros Favoritos</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
+      <div class="product-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 30px;">
         {featuredProducts.map(product => (
           <ProductCard {...product} />
         ))}
@@ -94,7 +94,7 @@ const featuredProducts = [
   <!-- Features -->
   <section style="background: var(--gray-bg); padding: 60px 0;">
     <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; text-align: center;">
+      <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; text-align: center;">
         <div>
           <div style="width: 60px; height: 60px; background: var(--primary-light); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
